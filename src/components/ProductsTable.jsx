@@ -1,5 +1,5 @@
 import React from 'react';
-import { ProductsList } from './ProductsList';
+import { Product } from './Product';
 
 export const ProductsTable = ({ products }) => (
   <table
@@ -24,7 +24,7 @@ export const ProductsTable = ({ products }) => (
             Product
             <a href="#/">
               <span className="icon">
-                <i data-cy="SortIcon" className="fas fa-sort-down" />
+                <i data-cy="SortIcon" className="fas fa-sort" />
               </span>
             </a>
           </span>
@@ -35,7 +35,7 @@ export const ProductsTable = ({ products }) => (
             Category
             <a href="#/">
               <span className="icon">
-                <i data-cy="SortIcon" className="fas fa-sort-up" />
+                <i data-cy="SortIcon" className="fas fa-sort" />
               </span>
             </a>
           </span>
@@ -54,47 +54,10 @@ export const ProductsTable = ({ products }) => (
       </tr>
     </thead>
 
-    <ProductsList products={products} />
-
-    {/* <tbody>
-          <tr data-cy="Product">
-            <td className="has-text-weight-bold" data-cy="ProductId">
-              1
-            </td>
-
-            <td data-cy="ProductName">Milk</td>
-            <td data-cy="ProductCategory">🍺 - Drinks</td>
-
-            <td data-cy="ProductUser" className="has-text-link">
-              Max
-            </td>
-          </tr>
-
-          <tr data-cy="Product">
-            <td className="has-text-weight-bold" data-cy="ProductId">
-              2
-            </td>
-
-            <td data-cy="ProductName">Bread</td>
-            <td data-cy="ProductCategory">🍞 - Grocery</td>
-
-            <td data-cy="ProductUser" className="has-text-danger">
-              Anna
-            </td>
-          </tr>
-
-          <tr data-cy="Product">
-            <td className="has-text-weight-bold" data-cy="ProductId">
-              3
-            </td>
-
-            <td data-cy="ProductName">iPhone</td>
-            <td data-cy="ProductCategory">💻 - Electronics</td>
-
-            <td data-cy="ProductUser" className="has-text-link">
-              Roma
-            </td>
-          </tr>
-        </tbody> */}
+    <tbody>
+      {products.map(product => (
+        <Product product={product} key={product.id} />
+      ))}
+    </tbody>
   </table>
 );
