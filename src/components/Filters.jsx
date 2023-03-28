@@ -60,6 +60,11 @@ export const Filters = ({
     }
   };
 
+  const handleInputClear = () => {
+    onQueryFilterChange('');
+    setQuery('');
+  };
+
   const handleResetFilters = () => {
     setCurrentCategoryIdFilter(0);
     setCurrentUserIdFilter(0);
@@ -122,6 +127,7 @@ export const Filters = ({
                 type="button"
                 className="delete"
                 aria-label="clear-button"
+                onClick={handleInputClear}
               />
             </span>
           )}

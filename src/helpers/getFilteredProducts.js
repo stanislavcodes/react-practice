@@ -24,5 +24,17 @@ export const getFilteredProducts = (
     );
   }
 
+  if (query) {
+    const normalizedQuery = query
+      .toLowerCase()
+      .split(' ')
+      .filter(Boolean)
+      .join(' ');
+
+    filteredProducts = filteredProducts.filter(
+      product => product.name.toLowerCase().includes(normalizedQuery),
+    );
+  }
+
   return filteredProducts;
 };
