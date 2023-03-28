@@ -1,7 +1,7 @@
 export const getFilteredProducts = (
   products,
   userId,
-  categoryId,
+  categoryIds,
   query,
 ) => {
   let filteredProducts = [...products];
@@ -12,15 +12,9 @@ export const getFilteredProducts = (
     );
   }
 
-  if (categoryId > 0) {
+  if (categoryIds.length > 0) {
     filteredProducts = filteredProducts.filter(
-      product => product.categoryId === categoryId,
-    );
-  }
-
-  if (categoryId > 0) {
-    filteredProducts = filteredProducts.filter(
-      product => product.categoryId === categoryId,
+      product => categoryIds.includes(product.categoryId),
     );
   }
 

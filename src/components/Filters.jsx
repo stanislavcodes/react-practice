@@ -25,13 +25,13 @@ const CategoryButton = ({
 export const Filters = ({
   users,
   categories,
+  selectedCategories,
   onUserFilterChange,
   onCategoryFilterChange,
   onQueryFilterChange,
 }) => {
   const [query, setQuery] = useState('');
   const [currentUserIdFilter, setCurrentUserIdFilter] = useState(0);
-  const [currentCategoryIdFilter, setCurrentCategoryIdFilter] = useState(0);
 
   const handleQueryChange = (event) => {
     const newQuery = event.target.value;
@@ -41,12 +41,12 @@ export const Filters = ({
   };
 
   const handleCategoryFilterChange = (id) => {
-    onCategoryFilterChange(id);
-
-    if (id === currentCategoryIdFilter) {
-      setCurrentCategoryIdFilter(0);
+    if (selectedCategories.includes(id)) {
+      onCategoryFilterChange(prev => (
+        prev.filter(categoryId => categoryId !== id)
+      ));
     } else {
-      setCurrentCategoryIdFilter(id);
+      onCategoryFilterChange(prev => [...prev, id]);
     }
   };
 
@@ -66,7 +66,7 @@ export const Filters = ({
   };
 
   const handleResetFilters = () => {
-    setCurrentCategoryIdFilter(0);
+    onCategoryFilterChange([]);
     setCurrentUserIdFilter(0);
     setQuery('');
     onUserFilterChange(0);
@@ -138,8 +138,13 @@ export const Filters = ({
         <a
           href="#/"
           data-cy="AllCategories"
-          className="button is-success mr-6 is-outlined"
-          onClick={() => handleCategoryFilterChange(0)}
+          className={classNames(
+            'button is-success mr-6',
+            {
+              'is-outlined': selectedCategories.length,
+            },
+          )}
+          onClick={() => onCategoryFilterChange([])}
         >
           All
         </a>
@@ -148,7 +153,7 @@ export const Filters = ({
           <CategoryButton
             title={category.title}
             key={category.title}
-            isActive={currentCategoryIdFilter === category.id}
+            isActive={selectedCategories.includes(category.id)}
             onCategoryClick={() => handleCategoryFilterChange(category.id)}
           />
         ))}

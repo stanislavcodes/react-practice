@@ -25,13 +25,13 @@ const products = productsFromServer.map((product) => {
 
 export const App = () => {
   const [userIdFilter, setUserIdFilter] = useState(0);
-  const [categoryIdFilter, setCategoryIdFilter] = useState(0);
+  const [categoryIdsFilter, setCategoryIdsFilter] = useState([]);
   const [queryFilter, setQueryFilter] = useState('');
 
   const filteredProducts = getFilteredProducts(
     products,
     userIdFilter,
-    categoryIdFilter,
+    categoryIdsFilter,
     queryFilter,
   );
 
@@ -44,8 +44,9 @@ export const App = () => {
           <Filters
             users={usersFromServer}
             categories={categoriesFromServer}
+            selectedCategories={categoryIdsFilter}
             onUserFilterChange={setUserIdFilter}
-            onCategoryFilterChange={setCategoryIdFilter}
+            onCategoryFilterChange={setCategoryIdsFilter}
             onQueryFilterChange={setQueryFilter}
           />
         </div>
