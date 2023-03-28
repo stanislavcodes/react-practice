@@ -24,12 +24,12 @@ const products = productsFromServer.map((product) => {
 });
 
 export const App = () => {
-  const temp = 0;
   const [userIdFilter, setUserIdFilter] = useState(0);
   const [categoryIdFilter, setCategoryIdFilter] = useState(0);
   const [queryFilter, setQueryFilter] = useState('');
 
   const filteredProducts = getFilteredProducts(
+    products,
     userIdFilter,
     categoryIdFilter,
     queryFilter,
@@ -44,11 +44,10 @@ export const App = () => {
           <Filters
             users={usersFromServer}
             categories={categoriesFromServer}
-            onUserFilter={setUserIdFilter}
-            onCategoryFilter={setCategoryIdFilter}
-            onQueryFilter={setQueryFilter}
+            onUserFilterChange={setUserIdFilter}
+            onCategoryFilterChange={setCategoryIdFilter}
+            onQueryFilterChange={setQueryFilter}
           />
-          {temp}
         </div>
 
         <div className="box table-container">

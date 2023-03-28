@@ -1,10 +1,20 @@
+import classNames from 'classnames';
 import React, { useState } from 'react';
 
-const CategoryButton = ({ title, onCategoryClick }) => (
+const CategoryButton = ({
+  title,
+  onCategoryClick,
+  isActive,
+}) => (
   <button
     type="button"
     data-cy="Category"
-    className="button mr-2 my-1 is-info"
+    className={classNames(
+      'button mr-2 my-1',
+      {
+        'is-info': isActive,
+      },
+    )}
     aria-label={`${title} filter button`}
     onClick={onCategoryClick}
   >
@@ -19,8 +29,9 @@ export const Filters = ({
   onCategoryFilterChange,
   onQueryFilterChange,
 }) => {
-  const temp = 0;
   const [query, setQuery] = useState('');
+  const [currentUserIdFilter, setCurrentUserIdFilter] = useState(0);
+  const [currentCategoryIdFilter, setCurrentCategoryIdFilter] = useState(0);
 
   const handleQueryChange = (event) => {
     const newQuery = event.target.value;
@@ -29,17 +40,48 @@ export const Filters = ({
     setQuery(newQuery);
   };
 
-  const handleAllCategoriesClick = () => {};
+  const handleCategoryFilterChange = (id) => {
+    onCategoryFilterChange(id);
+
+    if (id === currentCategoryIdFilter) {
+      setCurrentCategoryIdFilter(0);
+    } else {
+      setCurrentCategoryIdFilter(id);
+    }
+  };
+
+  const handleUserFilterChange = (id) => {
+    onUserFilterChange(id);
+
+    if (id === currentUserIdFilter) {
+      setCurrentUserIdFilter(0);
+    } else {
+      setCurrentUserIdFilter(id);
+    }
+  };
+
+  const handleResetFilters = () => {
+    setCurrentCategoryIdFilter(0);
+    setCurrentUserIdFilter(0);
+    setQuery('');
+    onUserFilterChange(0);
+    onCategoryFilterChange(0);
+    onQueryFilterChange('');
+  };
 
   return (
     <nav className="panel">
-      <p className="panel-heading">
-        Filters
-        {temp}
-      </p>
+      <p className="panel-heading">Filters</p>
 
       <p className="panel-tabs has-text-weight-bold">
-        <a data-cy="FilterAllUsers" href="#/" className="is-active">
+        <a
+          data-cy="FilterAllUsers"
+          href="#/"
+          className={classNames({
+            'is-active': currentUserIdFilter === 0,
+          })}
+          onClick={() => handleUserFilterChange(0)}
+        >
           All
         </a>
 
@@ -48,7 +90,10 @@ export const Filters = ({
             data-cy="FilterUser"
             href="#/"
             key={user.id}
-            onClick={() => onUserFilterChange(user.id)}
+            className={classNames({
+              'is-active': currentUserIdFilter === user.id,
+            })}
+            onClick={() => handleUserFilterChange(user.id)}
           >
             {user.name}
           </a>
@@ -88,7 +133,7 @@ export const Filters = ({
           href="#/"
           data-cy="AllCategories"
           className="button is-success mr-6 is-outlined"
-          onClick={handleAllCategoriesClick}
+          onClick={() => handleCategoryFilterChange(0)}
         >
           All
         </a>
@@ -96,7 +141,9 @@ export const Filters = ({
         {categories.map(category => (
           <CategoryButton
             title={category.title}
-            onCategoryClick={() => onCategoryFilterChange(category.id)}
+            key={category.title}
+            isActive={currentCategoryIdFilter === category.id}
+            onCategoryClick={() => handleCategoryFilterChange(category.id)}
           />
         ))}
       </div>
@@ -106,6 +153,7 @@ export const Filters = ({
           data-cy="ResetAllButton"
           href="#/"
           className="button is-link is-outlined is-fullwidth"
+          onClick={handleResetFilters}
         >
           Reset all filters
         </a>
